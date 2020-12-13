@@ -36,7 +36,7 @@ const xget = async (req, res, next) => {
 		if (req.recordId) {
 			const record = await Data.findOne({ _id: req.recordId, _box: req.box }).exec();
 			if (record) {
-				Data.updateOne({ _id: req.recordId, _box: req.box }, {_expiry: helper.getExpiryDate()});
+				Data.updateOne({ _id: req.recordId, _box: req.box }, {_expiry: helper.getExpiryDate()}).exec();
 		}
 			res.json(helper.responseBody(record, req.collection));
 		} else {
@@ -62,7 +62,7 @@ const xget = async (req, res, next) => {
 				.sort(sort)
 				.exec();
 				if (records){
-					Data.updateMany(query, {_expiry: helper.getExpiryDate()});
+					Data.updateMany(query, {_expiry: helper.getExpiryDate()}).exec();
 				}
 			res.json(records.map(r => helper.responseBody(r, req.collection)));
 		}
