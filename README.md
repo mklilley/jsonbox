@@ -268,21 +268,6 @@ This is FREE service, so we have to have some limitations to avoid abuse and sta
 5. 1 year of data retention.
 6. No backup. If your data is lost due to some technical issues, its lost forever.
 
-### Wrappers
-
-_Note: The wrappers listed here are from other sources and have not been tested or validated by us_
-
-- **Go**: [peteretelej/jsonbox](https://godoc.org/github.com/peteretelej/jsonbox) ([GitHub](https://github.com/peteretelej/jsonbox))
-- **Java**:
-  1. [https://search.maven.org/artifact/io.jsonbox/jsonbox](https://search.maven.org/artifact/io.jsonbox/jsonbox) ([GitHub](https://github.com/leonardiwagner/jsonbox-java))
-  2. [https://github.com/leeu1911/jsonbox-java](https://github.com/leeu1911/jsonbox-java)
-- **JavaScript (Node + browser)**: [https://www.npmjs.com/package/jsonbox-client](https://www.npmjs.com/package/jsonbox-client) ([GitHub](https://github.com/jsejcksn/jsonbox-client))
-- **JavaScript (Node)**: [https://www.npmjs.com/package/jsonbox-node](https://www.npmjs.com/package/jsonbox-node) ([GitHub](https://github.com/0xflotus/jsonbox-node))
-- **JavaScript (React)**: [https://www.npmjs.com/package/react-jsonbox](https://www.npmjs.com/package/react-jsonbox) ([GitHub](https://github.com/SaraVieira/react-jsonbox))
-- **PHP**: [https://packagist.org/packages/anper/jsonbox](https://packagist.org/packages/anper/jsonbox) ([GitHub](https://github.com/perevoshchikov/jsonbox))
-- **Python**: [https://pypi.org/project/jsonbox/](https://pypi.org/project/jsonbox/) ([GitHub](https://github.com/harlev/jsonbox-python))
-- **Rust**: [https://crates.io/crates/jsonbox](https://crates.io/crates/jsonbox) ([GitHub](https://github.com/kuy/jsonbox-rs))
-
 ### How to run locally
 
 Fork this repo and then clone it:
