@@ -1,10 +1,16 @@
 # jsonbox.io
 
+## THIS IS A FORK
+
+This is a fork of the original [jsonbox](https://github.com/vasanthv/jsonbox) built by the very generous [Vasanth](https://github.com/vasanthv). I made some small changes that can be [viewed here](https://github.com/vasanthv/jsonbox/compare/master...mklilley:master). My changes were mainly made to make the data less ephemeral. Most notably, data will only expire when it has not been read within a specific time period, rather than not being updated.
+
+---
+
 A HTTP based JSON storage. It lets you store, read & modify JSON data over HTTP APIs for FREE. Ideal for small projects, prototypes or hackathons, where you don't have to spin up your own data store.
 
 With the new protected boxes (introduced in v2), you can even power your websites with jsonbox.io.
 
-> :warning: **30 days of data retention:** Data older than 30 days will be deleted automatically. *Note: Updated data will be deleted 30 days from the updated date.*
+> :warning: **1 year of data retention:** Data older than 1 year will be deleted automatically. _Note: Read/Updated data will be deleted 1 year from the read/updated date._
 
 ## API Documentation
 
@@ -223,25 +229,30 @@ The result will have the following format
 - `_updatedOn` - the most recent updated date
 
 ### Optional IP Filtering
+
 When running your own instance localy, you could define IP Address filtering.  
 Set the value of `FILTER_IP_SET` in config.js to the set of allowed IP addresses.
 
 Single IP:
+
 ```
 FILTER_IP_SET: ['192.168.1.123']
 ```
 
 Using CIDR subnet masks for ranges:
+
 ```
 FILTER_IP_SET: ['127.0.0.1/24']
 ```
 
 Using IP ranges:
+
 ```
 FILTER_IP_SET: [['127.0.0.1', '127.0.0.10']]
 ```
 
 Using wildcard ip ranges and nginx forwarding:
+
 ```
 FILTER_IP_SET: ['10.1.*.*', '123.??.34.8*']
 ```
@@ -254,7 +265,7 @@ This is FREE service, so we have to have some limitations to avoid abuse and sta
 2. Can't push or pull more than 1000 records at a time.
 3. `POST` requests are rate-limited to 100 per hour per IP address
 4. There is no limit on the number of records you store in a box, but please don't abuse the API by storing large datasets of more than **5000** records. This is meant for small projects and that's why it is offered FREE of cost.
-5. 30 days of data retention. 
+5. 1 year of data retention.
 6. No backup. If your data is lost due to some technical issues, its lost forever.
 
 ### Wrappers
