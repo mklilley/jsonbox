@@ -74,12 +74,13 @@ const xput = async (req, res, next) => {
 	try {
 		const record = await Data.findOne({ _id: req.recordId, _box: req.box }).exec();
 		if (record) {
+			const newUpdatedOn = new Date();
 			await Data.updateOne({ _id: req.recordId, _box: req.box }, {
-				_updatedOn: new Date(),
+				_updatedOn: newUpdatedOn,
 				_expiry: helper.getExpiryDate(),
 				data: req.body
 			});
-			res.json({ message: 'Record updated.' });
+			res.json({ message: 'Record updated.' , _updatedOn: newUpdatedOn});
 		} else {
 			res.status(400).json({ message: 'Invalid record Id' });
 		}
