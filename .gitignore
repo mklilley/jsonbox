@@ -20,3 +20,6 @@ jsonbox.sublime-workspace
 
 # PM2 config files
 ecosystem.config.js
+
+# ACME challenge folder
+.well-known/
