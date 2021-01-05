@@ -31,3 +31,6 @@ var base =
   window.location.hostname +
   (window.location.port ? ':' + window.location.port : '');
 document.getElementById('boxurl').value = base + '/box_' + uniqueid;
+
+const copyBtn = document.querySelector("#copyBtn");
+copyBtn.addEventListener("click", function(){copyURL();});
