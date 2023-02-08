@@ -106,6 +106,13 @@ const xdelete = async (req, res, next) => {
 			const result = await Data.deleteMany(query);
 			res.json({ message: result.deletedCount + ' Records removed.' });
 		}
+		else {
+			const query = {};
+			query['_box'] = req.box;
+
+			const result = await Data.deleteMany(query);
+			res.json({ message: result.deletedCount + ' Records removed.' });
+		}
 	} catch (error) {
 		next(error);
 	}

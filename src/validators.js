@@ -76,7 +76,7 @@ const validateParams = (req, res, next) => {
 		throwError("Box id must be atleast 20 chars long & max. 64 chars.");
 	} else if (req.collection ? req.collection.length > 20 : false) {
 		throwError("Collection name can't be more than 20 chars.");
-	} else if (req.method === "PUT" || req.method === "DELETE") {
+	} else if (req.method === "PUT") {
 		if (!req.recordId && !req.query.q) {
 			throwError("Invalid or empty record id or missing query definition");
 		} else if (Array.isArray(req.body)) {

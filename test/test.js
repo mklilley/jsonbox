@@ -122,6 +122,25 @@ describe('jsonbox.io tests', () => {
 			assert.equal(response.body.length, 2);
 		});
 	});
+	describe('Delete all records.', () => {
+		it('Should be 200', async () => {
+			const response = await fetch(`${apiBase}/${boxId}`, {
+				method: 'DELETE',
+				headers: { 'Content-Type': 'application/json' }
+			});
+			assert.equal(response.status, 200);
+		});
+	});
+	describe('Verify delete all', () => {
+		it('Should be 200, with 0 records', async () => {
+			const response = await fetch(`${apiBase}/${boxId}`, {
+				method: 'GET',
+				headers: { 'Content-Type': 'application/json' }
+			});
+			assert.equal(response.status, 200);
+			assert.equal(response.body.length, 0);
+		});
+	});
 });
 
 describe('jsonbox.io protected box tests', () => {
@@ -198,6 +217,25 @@ describe('jsonbox.io protected box tests', () => {
 				headers: { 'Content-Type': 'application/json', Authorization: `API-KEY ${apiKey}` }
 			});
 			assert.equal(response.status, 200);
+		});
+	});
+	describe('Delete all records.', () => {
+		it('Should be 200', async () => {
+			const response = await fetch(`${apiBase}/${boxId}`, {
+				method: 'DELETE',
+				headers: { 'Content-Type': 'application/json', Authorization: `API-KEY ${apiKey}` }
+			});
+			assert.equal(response.status, 200);
+		});
+	});
+	describe('Verify delete all', () => {
+		it('Should be 200, with 0 records', async () => {
+			const response = await fetch(`${apiBase}/${boxId}`, {
+				method: 'GET',
+				headers: { 'Content-Type': 'application/json', Authorization: `API-KEY ${apiKey}` }
+			});
+			assert.equal(response.status, 200);
+			assert.equal(response.body.length, 0);
 		});
 	});
 });
