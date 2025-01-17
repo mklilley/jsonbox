@@ -2,8 +2,10 @@
 
 ## THIS IS A FORK
 
-This is a fork of the original [jsonbox](https://github.com/vasanthv/jsonbox) built by the very generous [Vasanth](https://github.com/vasanthv). I made some small changes that can be [viewed here](https://github.com/vasanthv/jsonbox/compare/master...mklilley:master). My changes were mainly made to make the data less ephemeral. Most notably, data will only expire when it has not been read within a specific time period, rather than not being updated.
-
+This is a fork of the original [jsonbox](https://github.com/vasanthv/jsonbox) built by the very generous [Vasanth](https://github.com/vasanthv). I made some changes that can be [viewed here](https://github.com/vasanthv/jsonbox/compare/master...mklilley:master). My changes were mainly made to:
+-  Make the data less ephemeral. Most notably, data will only expire when it has not been read within a specific time period, rather than not being updated.
+- Allow the deletion of all items in a box with a single request, e.g. `curl -X DELETE 'https://jsonbox.io/demobox_6d9e326c183fde7b`
+- Keep track of the time a change was made to the box, whether that be, created a new item, updating or deleting an item. This modifies the meta response to include a `_boxLastModified` key.
 ---
 
 A HTTP based JSON storage. It lets you store, read & modify JSON data over HTTP APIs for FREE. Ideal for small projects, prototypes or hackathons, where you don't have to spin up your own data store.

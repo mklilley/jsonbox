@@ -1,7 +1,7 @@
 const helper = require("./helper");
 const config = require("./config");
 
-const Data = require("./db").getInstance();
+const { Data, BoxTimeStamps } = require('./db').getInstance();
 
 // remove the system keys from req.body
 const removeNativeKeys = (req, res, next) => {

@@ -1,6 +1,23 @@
 const helper = require('./helper');
 const config = require('./config');
-const Data = require('./db').getInstance();
+const { Data, BoxTimeStamps } = require('./db').getInstance();
+
+const setBoxLastModified = async (box) => {
+	let record = await BoxTimeStamps.findOne({ _box: box }).exec();
+		if (record) {
+			await BoxTimeStamps.updateOne({_box: box }, {
+				boxLastModified: new Date(),
+				_expiry: helper.getExpiryDate(),
+			});
+		}
+		else {
+			await new BoxTimeStamps({
+				_box: box,
+				boxLastModified: new Date(),
+				_expiry: helper.getExpiryDate(),
+			}).save();
+		}
+};
 
 const xpost = async (req, res, next) => {
 	try {
@@ -21,9 +38,11 @@ const xpost = async (req, res, next) => {
 		if (Array.isArray(req.body)) {
 			const createRecordPromise = req.body.map(createRecord);
 			const newRecords = await Promise.all(createRecordPromise);
+			await setBoxLastModified(req.box)
 			res.json(newRecords);
 		} else {
 			const newRecord = await createRecord(req.body);
+			await setBoxLastModified(req.box)
 			res.json(newRecord);
 		}
 	} catch (error) {
@@ -36,7 +55,8 @@ const xget = async (req, res, next) => {
 		if (req.recordId) {
 			const record = await Data.findOne({ _id: req.recordId, _box: req.box }).exec();
 			if (record) {
-				Data.updateOne({ _id: req.recordId, _box: req.box }, {_expiry: helper.getExpiryDate()}).exec();
+				await Data.updateOne({ _id: req.recordId, _box: req.box }, {_expiry: helper.getExpiryDate()}).exec();
+				await BoxTimeStamps.updateOne({_box: req.box }, {_expiry: helper.getExpiryDate()});
 		}
 			res.json(helper.responseBody(record, req.collection));
 		} else {
@@ -62,7 +82,7 @@ const xget = async (req, res, next) => {
 				.sort(sort)
 				.exec();
 				if (records){
-					Data.updateMany(query, {_expiry: helper.getExpiryDate()}).exec();
+					await Data.updateMany(query, {_expiry: helper.getExpiryDate()}).exec();
 				}
 			res.json(records.map(r => helper.responseBody(r, req.collection)));
 		}
@@ -80,6 +100,7 @@ const xput = async (req, res, next) => {
 				_expiry: helper.getExpiryDate(),
 				data: req.body
 			});
+			await setBoxLastModified(req.box)
 			res.json({ message: 'Record updated.' , _updatedOn: newUpdatedOn});
 		} else {
 			res.status(400).json({ message: 'Invalid record Id' });
@@ -95,6 +116,7 @@ const xdelete = async (req, res, next) => {
 
 			if (record) {
 				await Data.deleteOne({ _id: req.recordId, _box: req.box });
+				await setBoxLastModified(req.box)
 				res.json({ message: 'Record removed.' });
 			} else {
 				res.status(400).json({ message: 'Invalid record Id' });
@@ -104,6 +126,7 @@ const xdelete = async (req, res, next) => {
 			query['_box'] = req.box;
 
 			const result = await Data.deleteMany(query);
+			await setBoxLastModified(req.box)
 			res.json({ message: result.deletedCount + ' Records removed.' });
 		}
 		else if (req.collection) {
@@ -113,6 +136,7 @@ const xdelete = async (req, res, next) => {
       query["_collection"] = req.collection;
 
       const result = await Data.deleteMany(query);
+      await setBoxLastModified(req.box);
       res.json({ message: `${result.deletedCount} records removed from collection '${req.collection}'.` });
     }
 		else {
@@ -120,6 +144,7 @@ const xdelete = async (req, res, next) => {
 			query['_box'] = req.box;
 
 			const result = await Data.deleteMany(query);
+			await setBoxLastModified(req.box)
 			res.json({ message: result.deletedCount + ' Records removed.' });
 		}
 	} catch (error) {
@@ -139,7 +164,8 @@ const xmeta = async (req, res, next) => {
 			.exec(),
 			Data.findOne(query)
 			.sort('-_updatedOn')
-			.exec()
+			.exec(),
+			BoxTimeStamps.findOne(query).exec()
 		];
 
 		const result = {};
@@ -156,6 +182,12 @@ const xmeta = async (req, res, next) => {
 				const updatedOn = values[2]['_updatedOn'];
 				if (updatedOn) result['_updatedOn'] = updatedOn;
 			}
+
+			if (values[3]) {
+        // get global last modified
+        const boxLastModified = values[3]["boxLastModified"];
+        if (boxLastModified) result["_boxLastModified"] = boxLastModified;
+      }
 
 			res.json(result);
 		});
